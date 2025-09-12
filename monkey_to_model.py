@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
     model = sys.argv[1]
     monkey = sys.argv[2]
-    out_dir = f'./results_predictions/monkey2model/{model}'
+    out_dir = f'./results_for_figures/monkey2model/{model}'
     data_dir = f'./'
     n_images = 1320
     main(model, monkey, out_dir, n_images, data_dir)
