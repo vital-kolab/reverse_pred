@@ -6,12 +6,12 @@ from h5_utils import h5read
 import prediction_utils as pu
 
 def load_selected_rates(monkey, data_dir):
-    if monkey == "magneto":
-        data = h5read(os.path.join(data_dir, 'neural_data/rates_magneto_active.h5'), '/magneto/active')
-        selected = np.load(os.path.join(data_dir, 'neural_data/selected_rates_magneto.npy'))
-    elif monkey == "nano":
-        data = h5read(os.path.join(data_dir, 'neural_data/rates_nano_active.h5'), '/nano/active')
-        selected = np.load(os.path.join(data_dir, 'neural_data/selected_rates_nano.npy'))
+    if monkey == "m1":
+        data = h5read(os.path.join(data_dir, 'neural_data/rates_m1_active.h5'), '/m1/active')
+        selected = np.load(os.path.join(data_dir, 'neural_data/selected_rates_m1.npy'))
+    elif monkey == "m2":
+        data = h5read(os.path.join(data_dir, 'neural_data/rates_m2_active.h5'), '/m2/active')
+        selected = np.load(os.path.join(data_dir, 'neural_data/selected_rates_m2.npy'))
     else:
         raise ValueError("Monkey not found")
     return pu.average_data(data), selected
