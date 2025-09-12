@@ -25,7 +25,7 @@ def ridge_regress(X_train, Y_train, X_test, model=None, monkey=None, fold=None):
 
     if model is not None:
         # Save the weights for later use
-        np.save(f'./results_predictions/model2monkey/{model}_to_{monkey}_ridge_weights_{fold}.npy', clf.coef_)    
+        np.save(f'./results_for_figures/model2monkey/{model}_to_{monkey}_ridge_weights_{fold}.npy', clf.coef_)    
 
     return Y_test_pred
 
