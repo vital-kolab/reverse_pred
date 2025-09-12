@@ -33,7 +33,7 @@ Traditional *forward* neural predictivity evaluates how well a model’s feature
 - `figure_utils.py` – journal‑style plotting helpers
 - `h5_utils.py` – helpers to read/write HDF5 feature and metadata files
 
-📦 *Large data files (IT features, image sets) are not stored in the repo.* They can be downloaded from: [here]()
+📦 *Large data files (IT features, image sets) are not stored in the repo.* They can be downloaded from: [here](https://osf.io/y3qmk/?view_only=6dfe548c7ba24238932d247e65523053)
 
 ## 🛠️ Installation
 
