@@ -19,21 +19,21 @@ Traditional *forward* neural predictivity evaluates how well a model’s feature
 
 ## 🗂️ Repository layout
 
-- `demo_forward_predictivity.ipynb` – quick demo of *forward* mapping model➜neurons
-- `demo_reverse_predictivity.ipynb` – quick demo of *reverse* mapping neurons➜model
-- `demo_generate_neurons_i1.ipynb` – compute image‑level neural metrics (I1/I2‑like)
+- `demo_forward_predictivity.ipynb` – quick demo of *forward* mapping model units -> neurons
+- `demo_reverse_predictivity.ipynb` – quick demo of *reverse* mapping model units <- neurons
+- `demo_generate_neurons_i1.ipynb` – compute image‑level neural metrics
 - `demo_generate_model_i1.ipynb` – compute image‑level model metrics
 - `figure[1-6].ipynb` – figure reproduction notebooks
-- `model_to_monkey.py` – utilities for model➜neural regression and evaluation
-- `monkey_to_model.py` – utilities for neural➜model regression and evaluation
+- `model_to_monkey.py` – utilities for model -> neural regression and evaluation
+- `monkey_to_model.py` – utilities for model <- neural regression and evaluation
 - `correlation_metrics.py` – Spearman/Pearson, reliability‑aware correlations, confidence intervals
-- `regression_metrics.py` – regression helpers (R², partial correlations, etc.)
+- `regression_metrics.py` – regression helpers
 - `prediction_utils.py` – shared helpers for prediction/decoding
 - `decode_utils.py` – train/test splits, cross‑validation, split‑half routines
 - `figure_utils.py` – journal‑style plotting helpers
 - `h5_utils.py` – helpers to read/write HDF5 feature and metadata files
 
-📦 *Large data files (IT features, image sets) are not stored in the repo.* Contact us to have access to the data.
+📦 *Large data files (IT features, image sets) are not stored in the repo.* They can be downloaded from: [here]()
 
 ## 🛠️ Installation
 
