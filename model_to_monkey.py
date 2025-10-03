@@ -36,11 +36,14 @@ def main(model, monkey, out_dir, n_images, data_dir):
 
     ev_path = os.path.join(out_dir, f'forward_{monkey}_ev.npy')
 
-    # Compute predictions from model
-    prediction = pu.get_all_preds(responses, model_features, ncomp=20)
-    # Compute EV
-    ev = pu.get_all_stats(prediction, selected_rates, model_features, ncomp=20)
-    np.save(ev_path, ev)
+    all_evs = []
+    for r in range(reps):
+        # Compute predictions from model
+        prediction = pu.get_all_preds(responses, model_features, ncomp=20)
+        # Compute EV
+        ev = pu.get_all_stats(prediction, selected_rates, model_features, ncomp=20)
+        all_evs.append(ev)
+    np.save(ev_path, all_evs)
 
 if __name__ == "__main__":
 
