@@ -25,7 +25,7 @@ def load_model_features(model, n_images, data_dir):
     features = load_features(model, n_images, data_dir)
     return features
 
-def main(model, monkey, out_dir, n_images, data_dir):
+def main(model, monkey, out_dir, n_images, data_dir, reps=20):
     os.makedirs(out_dir, exist_ok=True)
 
     # Load model features and data
