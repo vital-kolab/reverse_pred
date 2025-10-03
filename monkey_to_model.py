@@ -25,7 +25,7 @@ def load_model_features(model, n_images, data_dir):
     features = load_features(model, n_images, data_dir)
     return features
 
-def main(model, monkey, out_dir, n_images, data_dir):
+def main(model, monkey, out_dir, n_images, data_dir, reps=20):
     os.makedirs(out_dir, exist_ok=True)
 
     # Load model features and data
@@ -35,12 +35,17 @@ def main(model, monkey, out_dir, n_images, data_dir):
     print(responses.shape)
 
     ev_path = os.path.join(out_dir, f'reverse_{monkey}_ev.npy')
-    
-    # Compute predictions from model
-    prediction = pu.get_all_preds(model_features, responses, ncomp=20)
-    # Compute EV
-    ev = pu.get_all_stats(prediction, model_features, rates, ncomp=20)
-    np.save(ev_path, ev)
+
+    all_evs = []
+    for r in range(reps):
+        # Compute predictions from model
+        prediction = pu.get_all_preds(model_features, responses, ncomp=20)
+        # Compute EV
+        ev = pu.get_all_stats(prediction, model_features, rates, ncomp=20)
+        all_evs.append(ev)
+
+    all_evs = np.array(all_evs)
+    np.save(ev_path, np.nanmean(all_evs, axis=0))
 
 if __name__ == "__main__":
 
