@@ -43,7 +43,9 @@ def main(model, monkey, out_dir, n_images, data_dir, reps=20):
         # Compute EV
         ev = pu.get_all_stats(prediction, selected_rates, model_features, ncomp=20)
         all_evs.append(ev)
-    np.save(ev_path, all_evs)
+
+    all_evs = np.array(all_evs)
+    np.save(ev_path, np.nanmean(all_evs, axis=0))
 
 if __name__ == "__main__":
 
