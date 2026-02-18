@@ -61,6 +61,7 @@ Each mapping function takes:
 - `rates`: `(n_images × n_neurons × n_repeats)` array
 - `out_dir`: output directory for saving EV results
 - `reps`: number of cross-validated fits (default: 20)
+- `model_type`: Choice of regressor models among `ridge, linear, lasso, elasticnet, pls`. Default=`ridge`
 
 ---
 

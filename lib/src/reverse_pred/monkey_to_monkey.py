@@ -3,7 +3,7 @@ import sys
 import numpy as np
 from . import prediction_utils as pu
 
-def compute_monkey_to_monkey(rates_predictor, rates_predicted, out_dir, reps=20, max_n=None, name_predicted='monkey2', name_predictor='monkey1'):
+def compute_monkey_to_monkey(rates_predictor, rates_predicted, out_dir, reps=20, max_n=None, name_predicted='monkey2', name_predictor='monkey1', model_type='ridge'):
     os.makedirs(out_dir, exist_ok=True)
 
     responses_predicted = np.nanmean(rates_predicted, axis=2)
@@ -19,9 +19,9 @@ def compute_monkey_to_monkey(rates_predictor, rates_predicted, out_dir, reps=20,
             rates_predictor = rates_predictor[:, indices]
             
         # Compute predictions from model
-        prediction = pu.get_all_preds(responses_predicted, responses_predictor, ncomp=20)
+        prediction = pu.get_all_preds(responses_predicted, responses_predictor, ncomp=20, model_type=model_type)
         # Compute EV
-        ev = pu.get_all_stats(prediction, rates_predicted, rates_predictor, ncomp=20) #, rhoxx, rhoyy
+        ev = pu.get_all_stats(prediction, rates_predicted, rates_predictor, ncomp=20, model_type=model_type) #, rhoxx, rhoyy
         all_evs.append(ev)
 
     all_evs = np.array(all_evs)

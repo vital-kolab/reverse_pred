@@ -3,19 +3,19 @@ from .regression_metrics import get_train_test_indices, regress
 import numpy as np
 from .correlation_metrics import get_splithalves, spearmanbrown_correction
 
-def get_predictions_multioutput(responses, predictor, ncomp=10, nrfolds=10, seed=0):
+def get_predictions_multioutput(responses, predictor, ncomp=10, nrfolds=10, seed=0, model_type='ridge'):
     nrImages, n_targets = responses.shape
     ypred = np.full((nrImages, n_targets), np.nan)
 
     for i in range(nrfolds):
         train, test = get_train_test_indices(nrImages, nrfolds=nrfolds, foldnumber=i, seed=seed)
-        pred = regress(predictor[train, :], responses[train, :], predictor[test, :])
+        pred = regress(predictor[train, :], responses[train, :], predictor[test, :], model_type)
         ypred[test, :] = pred
 
     return ypred
 
 # Updated to handle multi-target
-def get_all_preds(neurons_predicted, neurons_predictor, ncomp):
+def get_all_preds(neurons_predicted, neurons_predictor, ncomp, model_type='ridge'):
     if len(neurons_predicted.shape) == 3:
         mean_target = np.nanmean(neurons_predicted, axis=2)   # shape: (n_images, n_target_neurons)
     else:
@@ -25,7 +25,7 @@ def get_all_preds(neurons_predicted, neurons_predictor, ncomp):
         mean_source = np.nanmean(neurons_predictor, axis=2)   # shape: (n_images, n_source_neurons)
     else:
         mean_source = neurons_predictor
-    p = get_predictions_multioutput(mean_target, mean_source, ncomp=ncomp)
+    p = get_predictions_multioutput(mean_target, mean_source, ncomp=ncomp, model_type=model_type)
     return p
 
 def get_splithalf_corr(var, ax=1, type='spearman'):
@@ -59,16 +59,16 @@ def predictivity(x, y, rho_xx, rho_yy):
     return ev
 
 
-def get_neural_neural_splithalfcorr(rate_predicted, rate_predictor, ncomp=10, nrfolds=10, seed=0):
+def get_neural_neural_splithalfcorr(rate_predicted, rate_predictor, ncomp=10, nrfolds=10, seed=0, model_type='ridge'):
     # Split-half correlation of each predicted neuron
     shc_predicted = get_splithalf_corr(rate_predicted, ax=2)  # shape: (n_neurons,) or (n_neurons, n_neurons)
     # Predict using split 1 and split 2 of the predictor
     sp1_predictor, sp2_predictor, _, _ = get_splithalves(rate_predictor, ax=2)
 
     p1 = get_predictions_multioutput(np.nanmean(rate_predicted, axis=2), np.nanmean(sp1_predictor, axis=2),
-                                     nrfolds=nrfolds, ncomp=ncomp, seed=seed)
+                                     nrfolds=nrfolds, ncomp=ncomp, seed=seed, model_type=model_type)
     p2 = get_predictions_multioutput(np.nanmean(rate_predicted, axis=2), np.nanmean(sp2_predictor, axis=2),
-                                     nrfolds=nrfolds, ncomp=ncomp, seed=seed)
+                                     nrfolds=nrfolds, ncomp=ncomp, seed=seed, model_type=model_type)
 
     prediction_shc = np.array([stats.pearsonr(p1[:, i], p2[:, i])[0] for i in range(p1.shape[1])])
     prediction_shc = spearmanbrown_correction(prediction_shc)
@@ -84,7 +84,7 @@ def get_neural_neural_splithalfcorr(rate_predicted, rate_predictor, ncomp=10, nr
 
     return prediction_shc, neuron_shc
 
-def get_neural_model_splithalfcorr(model_features, rate, ncomp=10, nrfolds=10, seed=0):
+def get_neural_model_splithalfcorr(model_features, rate, ncomp=10, nrfolds=10, seed=0, model_type='ridge'):
     """
     model_features: shape (n_images, n_model_units) - deterministic
     rate: shape (n_images, n_neurons, n_repeats) - noisy
@@ -92,8 +92,8 @@ def get_neural_model_splithalfcorr(model_features, rate, ncomp=10, nrfolds=10, s
     sp1, sp2, _, _ = get_splithalves(rate, ax=2)  # split neural responses along repetitions
 
     # Predict each split of neural data from fixed model features
-    p1 = get_predictions_multioutput(model_features, np.nanmean(sp1, axis=2), nrfolds=nrfolds, ncomp=ncomp, seed=seed)
-    p2 = get_predictions_multioutput(model_features, np.nanmean(sp2, axis=2), nrfolds=nrfolds, ncomp=ncomp, seed=seed)
+    p1 = get_predictions_multioutput(model_features, np.nanmean(sp1, axis=2), nrfolds=nrfolds, ncomp=ncomp, seed=seed, model_type=model_type)
+    p2 = get_predictions_multioutput(model_features, np.nanmean(sp2, axis=2), nrfolds=nrfolds, ncomp=ncomp, seed=seed, model_type=model_type)
 
     # Compute split-half correlation per neuron
     corr = np.array([stats.pearsonr(p1[:, i], p2[:, i])[0] for i in range(p1.shape[1])])
@@ -101,7 +101,7 @@ def get_neural_model_splithalfcorr(model_features, rate, ncomp=10, nrfolds=10, s
 
     return model_shc, 1.0
 
-def get_model_neural_splithalfcorr(rate, model_features, ncomp=10, nrfolds=10, seed=0):
+def get_model_neural_splithalfcorr(rate, model_features, ncomp=10, nrfolds=10, seed=0, model_type='ridge'):
     """
     Predict noisy neural responses from model features.
     - rate: shape (images, neurons, repeats)
@@ -118,8 +118,8 @@ def get_model_neural_splithalfcorr(rate, model_features, ncomp=10, nrfolds=10, s
     target_sp2 = np.nanmean(sp2, axis=2)  # (images, neurons)
 
     # Predict both splits from the model features
-    p1 = get_predictions_multioutput(target_sp1, model_features, nrfolds=nrfolds, ncomp=ncomp, seed=seed)
-    p2 = get_predictions_multioutput(target_sp2, model_features, nrfolds=nrfolds, ncomp=ncomp, seed=seed)
+    p1 = get_predictions_multioutput(target_sp1, model_features, nrfolds=nrfolds, ncomp=ncomp, seed=seed, model_type=model_type)
+    p2 = get_predictions_multioutput(target_sp2, model_features, nrfolds=nrfolds, ncomp=ncomp, seed=seed, model_type=model_type)
 
     # Compute split-half correlation of model predictions per neuron
     model_shc = np.array([stats.pearsonr(p1[:, i], p2[:, i])[0] for i in range(p1.shape[1])])
@@ -129,20 +129,20 @@ def get_model_neural_splithalfcorr(rate, model_features, ncomp=10, nrfolds=10, s
 
     return model_shc, neural_shc
 
-def get_all_stats(p, neurons_predicted, neurons_predictor, ncomp):
+def get_all_stats(p, neurons_predicted, neurons_predictor, ncomp, model_type='ridge'):
     if len(neurons_predicted.shape) == 3:
         mean_target = np.nanmean(neurons_predicted, axis=2)   # shape: (n_images, n_target_neurons)
     else:
         mean_target = neurons_predicted
 
     if len(neurons_predicted.shape) == 3 and len(neurons_predictor.shape) == 3:
-        mshc, nshc = get_neural_neural_splithalfcorr(neurons_predicted, neurons_predictor, ncomp=ncomp)
+        mshc, nshc = get_neural_neural_splithalfcorr(neurons_predicted, neurons_predictor, ncomp=ncomp, model_type=model_type)
 
     if len(neurons_predicted.shape) == 2 and len(neurons_predictor.shape) == 3:
-        mshc, nshc = get_neural_model_splithalfcorr(neurons_predicted, neurons_predictor, ncomp=ncomp)
+        mshc, nshc = get_neural_model_splithalfcorr(neurons_predicted, neurons_predictor, ncomp=ncomp, model_type=model_type)
 
     if len(neurons_predicted.shape) == 3 and len(neurons_predictor.shape) == 2:
-        mshc, nshc = get_model_neural_splithalfcorr(neurons_predicted, neurons_predictor, ncomp=ncomp)
+        mshc, nshc = get_model_neural_splithalfcorr(neurons_predicted, neurons_predictor, ncomp=ncomp, model_type=model_type)
 
     if len(neurons_predicted.shape) == 2 and len(neurons_predictor.shape) == 2:
         mshc, nshc = 1.0, 1.0
