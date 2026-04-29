@@ -76,18 +76,22 @@ Each `figureX.ipynb` notebook reproduces the corresponding figure from the prepr
 - **Figure 6:** Link with behavior
 
 ## 📌 Status & citation
-This codebase accompanies the preprint:
+This codebase accompanies the paper:
 
-**Muzellec, S. & Kar, K. (2025). _Reverse Predictivity: Going Beyond One‑Way Mapping to Compare Artificial Neural Network Models and Brains_. bioRxiv.**
+**Muzellec, Sabine, and Kohitij Kar. "Reverse predictivity for bidirectional comparison of neural networks and biological brains." Nature Machine Intelligence 8.3 (2026): 474-488.**
 
-If you use this repository or ideas from it, please cite the preprint and link to this repo.
+If you use this repository or ideas from it, please cite the paper and link to this repo.
 
 ```
-@article{muzellec_kar_2025_reversepredictivity,
-  title  = {Reverse Predictivity: Going Beyond One-Way Mapping to Compare Artificial Neural Network Models and Brains},
-  author = {Muzellec, Sabine and Kar, Kohitij},
-  year   = {2025},
-  journal= {bioRxiv}
+@article{muzellec2026reverse,
+  title={Reverse predictivity for bidirectional comparison of neural networks and biological brains},
+  author={Muzellec, Sabine and Kar, Kohitij},
+  journal={Nature Machine Intelligence},
+  volume={8},
+  number={3},
+  pages={474--488},
+  year={2026},
+  publisher={Nature Publishing Group UK London}
 }
 ```
 
