@@ -224,11 +224,15 @@ plt.show()
 If you use this library, please cite:
 
 ```
-@article{muzellec_kar_2025_reversepredictivity,
-  title   = {Reverse Predictivity: Going Beyond One-Way Mapping to Compare Artificial Neural Network Models and Brains},
-  author  = {Muzellec, Sabine and Kar, Kohitij},
-  journal = {bioRxiv},
-  year    = {2025}
+@article{muzellec2026reverse,
+  title={Reverse predictivity for bidirectional comparison of neural networks and biological brains},
+  author={Muzellec, Sabine and Kar, Kohitij},
+  journal={Nature Machine Intelligence},
+  volume={8},
+  number={3},
+  pages={474--488},
+  year={2026},
+  publisher={Nature Publishing Group UK, London}
 }
 ```
 
