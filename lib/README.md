@@ -5,7 +5,7 @@ A lightweight, modular Python library for computing **bidirectional alignment** 
 This package accompanies the preprint:
 
 **Muzellec, S., Kar, K. Reverse predictivity for bidirectional comparison of neural networks and biological brains. Nat Mach Intell 8, 474–488 (2026). https://doi.org/10.1038/s42256-026-01204-0**
-<https://www.nature.com/articles/s42256-026-01204-0>
+<[Link to paper](https://www.nature.com/articles/s42256-026-01204-0)>
 
 Reverse predictivity complements traditional *forward neural predictivity* by asking the reciprocal question:
 
