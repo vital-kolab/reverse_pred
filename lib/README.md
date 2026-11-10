@@ -1,4 +1,4 @@
-# Reverse Predictivity
+# Predictivity Toolbox
 
 A lightweight, modular Python library for computing **bidirectional alignment** between artificial neural network (ANN) representations and primate inferior temporal (IT) cortex responses.
 
